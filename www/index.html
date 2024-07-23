@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WOOTELDIC2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="lib/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="lib/themes/jquery.mobile.icons.min.css">
+    <link rel="stylesheet" href="lib/themes/theme.css">
+    <link rel="stylesheet" href="lib/themes/theme.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/jquery.mobile-1.4.5.min.js"></script>
+    <script src="cordova.js"></script>
+    <script src="js/index.js"></script>
+    <style>
+        .fixed-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- Page d'accueil -->
+    <div id="homePage" data-role="page" class="flex flex-col min-h-screen">
+        <header data-role="header" class="bg-blue-600 text-white p-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">WOOTELDIC2</h1>
+            <a href="#addContactPage" class="bg-green-500 text-white p-2 rounded">Ajouter</a>
+        </header>
+        <main role="main" class="flex-1 p-4 relative">
+            <input type="text" id="searchBar" placeholder="Rechercher..." class="mb-4 p-2 border rounded w-full bg-gray-800 text-gray-200">
+            <ul id="contactList" class="space-y-2">
+                <!-- Les contacts seront injectés ici -->
+            </ul>
+            
+        </main>
+        <footer data-role="footer" class="bg-blue-600 text-white p-4 text-center fixed-footer">
+            <h1>WOOTELDIC2 &copy; 2024</h1>
+        </footer>
+    </div>
+
+    <!-- Details contacts -->
+    <div id="detailsPage" data-role="page" class="flex flex-col min-h-screen">
+        <header data-role="header" class="bg-blue-600 text-white p-4 flex justify-between items-center">
+            <a href="#homePage" data-rel="back" class="text-white">&larr;</a>
+            <h1 class="text-2xl font-bold">WOOTELDIC2</h1>
+        </header>
+        <main role="main" class="flex-1 p-4">
+            <a href="#editContactPage" class="bg-yellow-500 text-white p-2 rounded block mb-4 text-center">Modifier</a>
+            <ul class="list-none p-0">
+                <li id="detailsName" class="text-2xl font-bold mb-2"></li>
+                <li id="detailsPhone" class="mb-2"></li>
+                <li id="detailsEmail"></li>
+            </ul>
+        </main>
+        <footer data-role="footer" class="bg-blue-600 text-white p-4 text-center fixed-footer">
+            <h1>WOOTELDIC2 &copy; 2024</h1>
+        </footer>
+    </div>
+
+    <!-- Page d'ajout de contact -->
+    <div id="addContactPage" data-role="page" class="flex flex-col min-h-screen">
+        <header data-role="header" class="bg-blue-600 text-white p-4 flex justify-between items-center">
+            <a href="#homePage" data-rel="back" class="text-white">&larr;</a>
+            <h1 class="text-2xl font-bold">WOOTELDIC2</h1>
+        </header>
+        <main role="main" class="flex-1 p-4">
+            <form id="addContactForm" class="space-y-4">
+                <div>
+                    <label for="nom" class="block">Nom</label>
+                    <input type="text" id="nom" name="nom" class="p-2 border rounded w-full bg-gray-800 text-gray-200">
+                </div>
+                <div>
+                    <label for="prenom" class="block">Prénom</label>
+                    <input type="text" id="prenom" name="prenom" class="p-2 border rounded w-full bg-gray-800 text-gray-200">
+                </div>
+                <div>
+                    <label for="telephone" class="block">Téléphone</label>
+                    <input type="tel" id="telephone" name="telephone" class="p-2 border rounded w-full bg-gray-800 text-gray-200">
+                </div>
+                <div>
+                    <label for="email" class="block">Email</label>
+                    <input type="email" id="email" name="email" class="p-2 border rounded w-full bg-gray-800 text-gray-200">
+                </div>
+                <button type="submit" onclick="addContact(event)" class="bg-green-500 text-white p-2 rounded w-full">Ajouter</button>
+            </form>
+        </main>
+        <footer data-role="footer" class="bg-blue-600 text-white p-4 text-center fixed-footer">
+            <h1>WOOTELDIC2 &copy; 2024</h1>
+        </footer>
+    </div>
+
+    <!-- Page de modification de contact -->
+    <div id="editContactPage" data-role="page" class="flex flex-col min-h-screen">
+        <header data-role="header" class="bg-blue-600 text-white p-4 flex justify-between items-center">
+            <a href="#detailsPage" data-rel="back" class="text-white">&larr;</a>
+            <h1 class="text-2xl font-bold">WOOTELDIC2</h1>
+        </header>
+        <main role="main" class="flex-1 p-4">
+            <form id="editContactForm" class="space-y-4">
+                <input type="hidden" id="editId" name="id">
+                <div>
+                    <label for="editNom" class="block">Nom</label>
+                    <input type="text" id="editNom" name="nom" class="p-2 border rounded w-full bg-gray-800 text-gray-200">
+                </div>
+                <div>
+                    <label for="editPrenom" class="block">Prénom</label>
+                    <input type="text" id="editPrenom" name="prenom" class="p-2 border rounded w-full bg-gray-800 text-gray-200">
+                </div>
+                <div>
+                    <label for="editTelephone" class="block">Téléphone</label>
+                    <input type="tel" id="editTelephone" name="telephone" class="p-2 border rounded w-full bg-gray-800 text-gray-200">
+                </div>
+                <div>
+                    <label for="editEmail" class="block">Email</label>
+                    <input type="email" id="editEmail" name="email" class="p-2 border rounded w-full bg-gray-800 text-gray-200">
+                </div>
+                <button type="submit" onclick="editContact(event)" class="bg-yellow-500 text-white p-2 rounded w-full">Modifier</button>
+            </form>
+        </main>
+        <footer data-role="footer" class="bg-blue-600 text-white p-4 text-center fixed-footer">
+            <h1>WOOTELDIC2 &copy; 2024</h1>
+        </footer>
+    </div>
+
+</body>
+</html>
