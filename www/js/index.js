@@ -68,10 +68,16 @@ function filterContacts() {
 function addContact(event) {
     event.preventDefault();
     const newContact = navigator.contacts.create();
-    newContact.displayName = document.getElementById('nom').value;
+    newContact.name = document.getElementById('nom').value;
+    newContact.displayName = document.getElementById("prenom").value + " " + document.getElementById('nom').value;
     newContact.phoneNumbers = [{ type: 'mobile', value: document.getElementById('telephone').value }];
     newContact.emails = [{ type: 'home', value: document.getElementById('email').value }];
 
+
+    // alert(JSON.stringify(newContact))
+    // alert(displayName.phoneNumbers)
+    // alert(displayName.emails)
+    // alert(newContact.displayName)
     newContact.save(onAddSuccess, onAddError);
 }
 
